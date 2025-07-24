@@ -5,6 +5,7 @@ import game.components.card.Rank;
 import game.components.card.Suit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,31 +58,16 @@ import java.util.List;
  */
 public class Deck {
     // TODO: 구현하세요 - 인스턴스 초기화 블록 추가
-    // 
-    // 🎯 구현 순서:
-    // 1. 인스턴스 초기화 블록을 만들어야 합니다
-    //    - 초기화 블록은 { }로 감싸진 코드 영역입니다
-    //    - 클래스 내부에 필드 선언 아래에 작성합니다
-    //    - 예: { /* 여기에 초기화 코드 작성 */ }
-    // 
-    // 2. 52장의 카드를 생성하는 로직
-    //    - 바깥 반복문: Suit.values()로 모든 무늬 순회 (SPADES, HEARTS, DIAMONDS, CLUBS)
-    //    - 안쪽 반복문: Rank.values()로 모든 랭크 순회 (TWO부터 ACE까지)
-    //    - 각 조합에 대해 new Card(suit, rank)로 카드 생성
-    //    - cards.add()로 리스트에 추가
-    // 
-    // 3. 세부 구현 힌트
-    //    - for-each 문법 사용: for (Suit suit : Suit.values())
-    //    - 각 무늬마다 13장의 카드가 생성되어야 합니다
-    //    - 총 4 × 13 = 52장이 만들어집니다
-    // 
-    // 테스트 실패 시 확인사항:
-    // - "덱은 52장의 카드를 가져야 합니다" 에러: 반복문이 잘못되었거나 추가를 빼먹었습니다
-    // - "빈 컬렉션입니다" 경고: 초기화 블록을 만들지 않았습니다
-    // - NullPointerException: Card 생성자에 null을 전달했습니다
-    
     private final List<Card> cards = new ArrayList<>();
-    
+
+    {
+        for (Suit suit : Suit.values()) { //4
+            for (Rank rank : Rank.values()) { //13
+                cards.add(new Card(suit, rank)); //52
+            }
+        }
+    }
+
     /**
      * 덱을 섞습니다.
      * 
@@ -111,8 +97,9 @@ public class Deck {
         // 테스트 실패 시 확인사항:
         // - "카드 순서가 변경되지 않았습니다" 에러: Collections.shuffle()을 호출하지 않았습니다
         // - "카드 수가 변경되었습니다" 에러: 다른 메서드를 사용했거나 추가 로직을 넣었습니다
-        
-        throw new UnsupportedOperationException("shuffle() 메서드가 아직 구현되지 않았습니다");
+
+        Collections.shuffle(cards); //덱 섞기 collection.shuffle 리스트 요소 순서를 랜덤하게 재배치!
+
     }
     
     /**
@@ -137,10 +124,16 @@ public class Deck {
         // - "덱이 비어있습니다" 에러: isEmpty() 체크를 하지 않았습니다
         // - "카드가 제거되지 않았습니다" 에러: remove() 메서드를 호출하지 않았습니다
         // - IndexOutOfBoundsException: 빈 리스트에서 카드를 뽑으려고 했습니다
-        
-        throw new UnsupportedOperationException("drawCard() 메서드가 아직 구현되지 않았습니다");
+
+        { //카드 한장을 덱에서 뽑아 제거 후 반환
+            if (cards.isEmpty()) {
+                throw new IllegalStateException("빈 컬렉션입니다.");
+            }
+            //리스트 끝에서 제거: remove는 제거한 요소 반환
+            return cards.remove(cards.size() - 1); //비어 있으면 예외 던지기. 비어있지 않으면 마지막 카드 꺼내고 제거..
+        }
     }
-    
+
     /**
      * 덱이 비어있는지 확인합니다.
      * 
@@ -156,7 +149,6 @@ public class Deck {
         // 테스트 실패 시 확인사항:
         // - "덱이 비어있지 않은데 true를 반환했습니다" 에러: 조건을 반대로 구현했습니다
         // - "덱이 비어있는데 false를 반환했습니다" 에러: isEmpty() 로직이 잘못되었습니다
-        
-        throw new UnsupportedOperationException("isEmpty() 메서드가 아직 구현되지 않았습니다");
+        return cards.isEmpty();
     }
 }
