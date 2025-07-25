@@ -3,6 +3,7 @@ package game.participants.dealer;
 import game.components.deck.Deck;
 import game.participants.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,60 +25,73 @@ public class Dealer {
     private Deck deck;
     private static final int CARDS_PER_PLAYER = 5;
     private static final int PRIZE_PER_ROUND = 100;
-    
+
     /**
      * Dealer 생성자
      */
     public Dealer() {
         this.deck = new Deck();
     }
-    
+
     /**
      * 새로운 게임을 시작합니다.
      * 덱을 초기화하고 셔플합니다.
      */
     public void startNewGame() {
         // TODO: 구현하세요
-        // 힌트:
         // 1. deck.reset()으로 덱 초기화
+        deck = new Deck();
         // 2. deck.shuffle()로 카드 섞기
-        throw new UnsupportedOperationException("Not implemented yet");
+        deck.shuffle();
     }
-    
+
     /**
      * 플레이어들에게 카드를 분배합니다.
-     * 
+     *
      * @param players 카드를 받을 플레이어 목록
      */
     public void dealCards(List<? extends Player> players) {
         // TODO: 구현하세요
         // 힌트:
-        // 1. 각 플레이어의 핸드를 clear()
-        // 2. 각 플레이어에게 CARDS_PER_PLAYER장씩 분배
-        // 3. deck.drawCard()를 사용하여 카드를 뽑고
-        // 4. player.getHand().addCard()로 추가
-        throw new UnsupportedOperationException("Not implemented yet");
+        // 1. 각 플레이어의 핸드를 clean() 기존 남아 있는 카드 비우기
+        for (Player player : players) {
+            player.getHand().clear();
+        }
+        // 2. 각 플레이어에게 CARDS_PER_PLAYER장씩 분배    // CARDS_PER_PLAYER장  한장씩 ++1
+        for (int i = 0; i < CARDS_PER_PLAYER; i++) {
+            for (Player player : players) {//덱에서 한 장씩 뽑고
+                // 3. deck.drawCard()를 사용하여 카드를 뽑고
+                var card = deck.drawCard();
+                player.getHand().add(card);
+            }
+        }
     }
-    
+
     /**
      * 라운드의 승자를 결정합니다.
-     * 
+     *
      * @param players 참가 플레이어 목록
      * @return 승자 목록 (동점일 경우 여러 명)
      */
     public List<? extends Player> determineWinners(List<? extends Player> players) {
         // TODO: 구현하세요
         // 힌트:
-        // 1. 최고 점수를 가진 플레이어들을 찾기
-        // 2. List<Player> winners = new ArrayList<>();
-        // 3. 각 플레이어의 hand.evaluateHand()로 핸드 순위 확인
-        // 4. 가장 높은 점수를 가진 플레이어들을 winners에 추가
-        // 5. 동점자가 있을 수 있음을 고려
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-    
+        // 1. 최고 점수를 가진 플레이어들을 찾기 // 2. List<Player> winners = new ArrayList<>();]
+        List<Player> winners = new ArrayList<>();
+        int 최고점수 = 0;
+        for (Player player : players) {
+            // 3. 각 플레이어의 hand.evaluateHand()로 핸드 순위 확인
+            int 점수 = player.getHand().evaluate().getScore(); // 최고점수 -1 <=
+            // 4. 가장 높은 점수를 가진 플레이어들을 winners에 추가
+            for (int i = 0; i < CARDS_PER_PLAYER; i++) {
+                winners.add(player);
+                // 5. 동점자가 있을 수 있음을 고려
+                if (최고점수==점수); //최고점수==점수
+                return winners; //승자들에게 상금을 분배합니다.
+            }
+        }
     /**
-     * 승자들에게 상금을 분배합니다.
+     *
      * 
      * @param winners 승자 목록
      * @param prizeAmount 각 승자가 받을 상금
