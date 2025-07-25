@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Deck 클래스 테스트
- *
+ * 
  * 이 테스트 클래스는 Deck 클래스의 모든 기능이 올바르게 구현되었는지 검증합니다.
  * private 필드를 테스트하기 위해 리플렉션을 사용하여 내부 상태를 확인합니다.
  * 
